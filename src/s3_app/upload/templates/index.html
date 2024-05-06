@@ -1,0 +1,48 @@
+{% extends "base.html" %} 
+
+{% block mainContent %}
+<div class="container">
+  <h4>UPload</h4>
+  <div class="input-group mb-3">
+    <form id="uploadForm" enctype="multipart/form-data" hx-on:submit="uploadFile(event)">
+      {% csrf_token %}
+      <input type="file" class="form-control" id="inputGroupFile" />
+      <button type="submit" class="my-3">Upload</button>
+    </form>
+  </div>
+</div>
+{% endblock mainContent %} 
+
+{% block displayList %}
+<h4>All Documents List</h4>
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">File</th>
+        <th scope="col">Download</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for document in documents %}
+
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ document.documentName }}</td>
+        <td><i class="fa-solid fa-download" hx-on:click="downloadFile('{{ document.documentName }}')"></i></td>
+        <td><i class="fa-sharp fa-solid fa-trash" hx-on:click="deleteFile('{{ document.documentName }}')"></i></td>
+      </tr>
+
+      {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+{% endblock displayList%} 
+
+{% load static %} 
+{% block scripts %}
+  <script src="{% static 'index.js' %}"></script>
+{% endblock %}
